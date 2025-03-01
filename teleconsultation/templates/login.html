@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Téléconsultation</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            /* display: flex;  */
+             justify-content: center; 
+             align-items: center; 
+            /* height: 100vh;
+            margin: 0; */
+            
+        }
+
+        .container {
+            /* background-color: white; */
+            padding: 20px;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 50px auto;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 350px; /* Réduire la largeur */
+            /* width: 80%;
+            margin-top: 30px; /* Descendre le bloc */
+            margin-left: 560px; 
+        }
+        
+        .container h2 {
+            color: #4CAF50; /* Vert principal */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .container form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container label {
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .container input[type="text"],
+        .container input[type="password"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .container button {
+            background-color: #4CAF50; /* Vert principal */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .container button:hover {
+            background-color: #45a049;
+        }
+        
+        .container .link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .container .link a {
+            color: #2196F3; /* Bleu secondaire */
+            text-decoration: none;
+        }
+        
+        .container .link a:hover {
+            text-decoration: underline;
+        }
+        
+        .messages {
+            margin-bottom: 20px;
+        }
+        
+        .messages .success {
+            color: green;
+        }
+        
+        .messages .error {
+            color: red;
+        }
+        .footer {
+            text-align: center;
+            /* background-color: #f4f4f4; */
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 2px 5px; /* Réduction du padding pour diminuer la hauteur */
+            font-size: 14px; 
+        /* padding: 10px 0; */
+            border-top: 1px solid #ccc;
+            background-color: #4CAF50; 
+            color: white;
+            /* padding: 2rem; */
+            /* text-align: center; */
+        }
+        .footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block content %}
+    <div class="container">
+        <h2>Connexion</h2>
+        <h3 style="color: red;">{{ error}}</h3>
+        <form method="post" >
+            {% csrf_token %}
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" id="username" name="username" placeholder="Entrer votre nom">
+
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="Entrer votre Mot de passe">
+
+            <button type="submit">Se connecter</button>
+        </form>
+        <div class="link">
+            <h4> <a href="/reset_password" style="color: red;size: 5px; font-size: 18px;" > mot de passe oublier</a></h4>
+            <p style="color: white;">Pas encore inscrit <strong>? </strong><a href="{% url 'register' %}">Inscrivez-vous ici</a></p>
+        </div>
+    </div>
+    
+     <div class="footer">
+        <p>À propos de nous: Notre application de téléconsultation vous permet de consulter des médecins à distance, de suivre vos diagnostics et de gérer vos rendez-vous facilement.</p>
+        By HENRI BIKOURI  Licence  scien.ing polytechnique 2023-2024
+        <div class="social-links">
+            <a href="#"><img src="{% static 'images\meta.png' %}" alt=""></a>
+            <a href="https://wa.me/+237681252415">WhatsApp</a>
+            <a href="https://x.com/HBikouri?t=QbagAcpDiDZGq6cO02NDfA&s=09">Twitter</a>
+            <a href="https://www.facebook.com/henri.bikouri">Facebook</a>
+        </div> 
+    {% endblock %}
+</body>
+</html>

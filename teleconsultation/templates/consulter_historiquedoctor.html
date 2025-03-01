@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Consulter l'historique</h1>
+  
+
+  <div class="row mb-4">
+    
+    <div class="col-md-6">
+      <div class="card">
+        
+        <div class="card-body">
+          
+          <h5 class="card-title">Statistiques</h5>
+          <p class="card-text">
+            Nombre total de diagnostique: {{ total_patients }}<br>
+            Nombre total de diagnostique en attente : {{ total_donnees }} 
+            <a href="{% url 'doctor' %}" class="btn btn-outline-success position-absolute top-0 end-0 mt-3 me-3" style="margin-left: 465px;transform: translateY(-75px);">Retour</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th style="color: white;"><strong>Statut</strong></th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for patient_info in patients_with_status %}
+      <tr>
+        <td style="color: rgb(10, 74, 16);"><strong>{{ patient_info.patient.user.last_name}}</strong></td>
+        <td style="color: rgb(13, 106, 8);"><strong>{{ patient_info.patient.user.first_name}}</strong></td>
+        <td>
+          {% if patient_info.status == 'soumis' %}
+          <span class="badge badge-success">  </span>
+          {% else %}
+          <span class="badge badge-warning">En attente de diagnostique </span> 
+          
+        <td> <button class="badge badge-success"  > <a href="{% url 'soumettre_diagnostic' patient_info.patient.pk  %}">Soumettre diagnostique </a> </button> </td>
+          {% endif %}
+        </td>
+        <td>
+          {% if patient_info.status == 'soumis' %}
+          
+          {% else %}
+           
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

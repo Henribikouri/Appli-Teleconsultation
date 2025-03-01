@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="display-4" style="color: #343a40;">Saisir un Rendez-vous pour 
+            <strong style="color: #007bff;">{{ patient.user.last_name }} {{ patient.user.first_name }}</strong>
+        </h2>
+        <a href="{% url 'consulter_historique' %}" class="btn btn-outline-light mt-3 me-3 btn-lift" 
+            style="border-radius: 50px; background-color: #28a745; color: white;">Retour</a>
+    </div>
+    <div class="card shadow-lg p-4">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg" style="background-color: #007bff; border: none; border-radius: 50px;">Enregistrer le Rendez-vous</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        background-image: url('/path/to/your/background/image.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    .card {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+    }
+    .btn-lift:hover {
+        transform: scale(1.05);
+        transition: transform 0.2s;
+    }
+</style>
+{% endblock %}

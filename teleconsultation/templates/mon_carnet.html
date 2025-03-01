@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-center">Mon Carnet</h5>
+
+            <div class="patient-info mt-4">
+                <h3>{{ patient.user.last_name }} {{ patient.user.first_name }}</h3>
+                <p><strong>Centre de santé :</strong> {{ patient.centre_de_sante.nom }}</p>
+            </div>
+
+            <div class="patient-data mt-4">
+                <h4>Vos Coordonnees </h4>
+                <p><strong>Téléphone :</strong> {{ patient.numero_telephone }}</p>
+                <p><strong>Adresse :</strong> {{ patient.adresse }}</p>
+            </div>
+
+            <div class="prescription-info mt-4">
+                <h4>Informations de la Prescription</h4>
+                {% if Diagnostique %}
+                    <p><strong>Prescription :</strong> {{ Diagnostique.prescription }}</p>
+                    <p><strong>Soumis Le :</strong> {{ Diagnostique.date_diagnostic }}</p>
+                    <p><strong>Par :</strong> {{ Diagnostique.nom_docteur }}</p>
+                    <p style="color: #158930;"><strong><i>Plus de details aupres de votre agent Communautaire , au rendez-vous ci-dessous</i> </strong></p>
+                {% else %}
+                    <p style="color: red;"><strong>Prescription :</strong> Aucune prescription disponible.</p>
+                {% endif %}
+            </div>
+
+            <div class="rendezvous-info mt-4">
+                <h4>Rendez-vous</h4>
+                {% if rendezvous %}
+                    <p><strong>Date :</strong> {{ rendezvous.date_rendezvous }}</p>
+                    <p><strong>Lieu :</strong> {{ rendezvous.centre_de_sante }}</p>
+                    <p><strong>Heure :</strong> {{ rendezvous.heure_debut }}</p>
+                    <p><strong>Durée :</strong> {{ rendezvous.duree }}</p>
+                    <p><strong>Notes :</strong><i>{{ rendezvous.observation }}</i> </p>
+                {% else %}
+                    <p style="color: red;"><strong>Statut :</strong> En attente</p>
+                {% endif %}
+            </div>
+
+            <a href="{% url 'patient' %}" class="btn btn-primary btn-block mt-4">Retour</a>
+        </div>
+    </div>
+</div>
+<style>
+    .card-body {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.patient-info h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.patient-data, .prescription-info, .rendezvous-info {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.btn {
+    background-color: #28a745;
+    color: white;
+    border-radius: 50px;
+}
+
+</style>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enregistrement Réussi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Enregistrement Réussi!</h4>
+        <p>Les données de la patiente ont été enregistrées avec succès.</p>
+        <hr>
+        <p class="mb-0">
+            <a href="{% url 'enregistrer_donnees_patiente' %}" class="btn btn-primary">Enregistrer une autre patiente</a>
+            <a href="{% url 'agent' %}" class="btn btn-secondary">Retour à l'accueil</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>

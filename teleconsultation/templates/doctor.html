@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-primary"><strong>Bienvenue, Docteur</strong></h1>
+        <p class="lead text-muted"><mark style="background-color: rgb(0, 106, 255);color: white; border-radius: 10px;">Gérez vos diagnostiques et vos patientes avec efficacité</mark> </p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Liste des Diagnostiques</h5>
+                    <p class="card-text">Consultez et gérez la liste des diagnostiques réalisés.</p>
+                    <a href="{% url 'consulter_historiquedoctor' %}" class="btn btn-outline-primary">Voir Diagnostiques en ATTENTE</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Historique de Diagnostiques</h5>
+                    <p class="card-text">Accédez à l'historique complet des diagnostiques.</p>
+                    <a href="{% url 'liste_diagnostics' %}" class="btn btn-outline-primary">Voir Historique</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Liste des Patientes</h5>
+                    <p class="card-text">Consultez la liste des patientes suivies.</p>
+                    <a href="{% url 'voir_patients' %}" class="btn btn-outline-primary">Voir Patientes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

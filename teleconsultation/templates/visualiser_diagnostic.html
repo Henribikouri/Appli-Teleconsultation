@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-primary text-white text-center py-4">
+            <h3 class="card-title mb-0">Diagnostic de <strong style="color: black;">{{ diagnostic.patient.user.last_name }} {{ diagnostic.patient.user.first_name }}</strong></h3>
+        </div>
+        <div class="card-body p-5">
+            <a href="{% url 'consulter_historique' %}" class="btn btn-outline-success mt-3 me-3 btn-lift" 
+            style="border-radius: 50px; background-color: #28a745; color: white; margin-left: 300px;">Retour</a>
+            <p><strong class="text-primary">Prescription :</strong> {{ diagnostic.prescription }}</p>
+            <p><strong class="text-primary">Détails de la Prescription :</strong> {{ diagnostic.details }}</p>
+            <p><strong class="text-primary">Résultat :</strong> {{ diagnostic.resultat }}</p>
+            <p><strong class="text-primary">Effectué le :</strong> {{ diagnostic.date_diagnostic|date:"d M Y" }}, <strong style="color: #007bff;">Par :</strong> {{ diagnostic.nom_docteur }}</p>
+            
+            <div class="text-center mt-4">
+                
+                <a href="{% url 'saisir_rendezvous' patient.pk %}" class="btn btn-outline-primary btn-lg">Saisir un rendez-vous</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+    .card {
+        background-color: #f8f9fa;
+    }
+    .card-header {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .card-title {
+        font-size: 1.5rem;
+    }
+    .card-body p {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+    .btn-outline-primary {
+        border-width: 2px;
+    }
+    .btn-lg {
+        padding: 10px 20px;
+        font-size: 1.2rem;
+    }
+</style>
+{% endblock %}

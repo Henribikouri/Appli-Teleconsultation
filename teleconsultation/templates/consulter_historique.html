@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        
+        <h2 ><mark style="background-color: rgb(0, 106, 255);color: white; border-radius: 20px;">Historique des Patientes</mark></h2>
+        <a href="{% url 'agent' %}" class="btn btn-outline-success position-absolute top-0 end-0 mt-3 me-3" style="margin-left: 465px;transform: translateY(-75px);">Retour</a>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-4">
+            <div class="card bg-info text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Patientes</h5>
+                    <p class="card-text">{{ total_patients }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Données de Consultation</h5>
+                    <p class="card-text">{{ total_donnees }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nom de famille</th>
+                    <th>Prénom</th>
+                    <th>Centre de Santé</th>
+                    <th>Numéro de Téléphone</th>
+                    <th>Statut du Diagnostic</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in patients_with_status %}
+                <tr>
+                    <td><a href="{% url 'patient_detail' entry.patient.pk %}">{{ entry.patient.user.last_name }}</a></td>
+                    <td>{{ entry.patient.user.first_name }}</td>
+                    <td>{{ entry.patient.centre_de_sante.nom }}</td>
+                    <td>{{ entry.patient.numero_telephone }}</td>
+                    <td>
+                        {% if entry.status == 'soumis' %}
+                        <a href="{% url 'visualiser_diagnostic' entry.diagnostic_id %}">{{ entry.status }}</a>
+                        {% else %}
+                        {{ entry.status }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    table {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .table thead {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+</style>
+{% endblock %}

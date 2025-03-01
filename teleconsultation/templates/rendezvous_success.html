@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h2>Rendez-vous Enregistré avec Succès pour {{ rendezvous.patient.user.last_name }} {{ rendezvous.patient.user.first_name }}</h2>
+    <div class="mt-4">
+        <a href="{% url 'consulter_historique' %}" class="btn btn-outline-success btn-lg" 
+           style="margin-right: 20px;">Retour</a>
+
+    </div>
+</div>
+{% endblock %}

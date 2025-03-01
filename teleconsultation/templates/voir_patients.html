@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utc1_filters %}
+
+
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 style="color: rgb(0, 106, 255);"><strong>Liste des Patientes</strong></h1>
+        {% if user.is_agent %}
+        <a href="{% url 'agent' %}" class="btn btn-outline-success position-absolute top-0 end-0 mt-3 me-3" style="margin-left: 465px;transform: translateY(-75px);">Retour</a>
+        {% endif %}
+        {% if user.is_doctor %}
+        <a href="{% url 'doctor' %}" class="btn btn-outline-success position-absolute top-0 end-0 mt-3 me-3" style="margin-left: 465px;transform: translateY(-75px);">Retour</a>
+        {% endif %}
+        <p class="lead" style="color: white;"><strong>Consultez les informations des patientes sous votre responsabilité.</strong></p>
+    </div>
+
+    <!-- Formulaire de recherche -->
+    <form method="GET" action="{% url 'voir_patients' %}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Rechercher par nom ou centre de santé" value="{{ request.GET.q }}">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Rechercher</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row mt-4">
+        {% for patient in patients %}
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <div class="img-container mb-3">
+                        {% if patient.photo_profil %}
+                        <img src="{{ patient.photo_profil.url }}" class="rounded-circle" alt="Photo de {{ patient.user.username }}" style="width: 150px; height: 150px; object-fit: cover;">
+                        {% else %}
+                        <img src="{% static 'images/aucunepp.png' %}" class="rounded-circle" alt="Photo de {{ patient.user.username }}" style="width: 150px; height: 150px; object-fit: cover;">
+                        {% endif %}
+                    </div>
+                    <h5 class="card-title">{{ patient.user.last_name }}  {{ patient.user.first_name }}</h5>
+                    <p class="card-text"><strong>Centre de Santé:</strong> {{ patient.centre_de_sante.nom }}</p>
+                    <p class="card-text"><strong>Numéro de Téléphone:</strong> {{ patient.numero_telephone }}</p>
+                    <p class="card-text"><strong>Adresse:</strong> {{ patient.adresse }}</p>
+                    <!-- Buttons -->
+                    {% if user.is_doctor %}
+                    <a href="{% url 'patient_detail' patient.pk %}" class="btn btn-primary btn-sm">Consulter les Donnees</a>
+                    {% endif %}
+                    {% if user.is_agent %}
+                    <a href="{% url 'patient_detail' patient.pk %}" class="btn btn-primary btn-sm">Voir Plus</a>
+                    <a href="{% url 'supprimer_patient' patient.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Aucune patiente trouvé.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+<style>
+    body {
+        background-image: url("{% static 'images/fondprojet.jpg' %}");
+        background-size: cover; /* L'image couvre toute la page */
+        background-position: center; /* Centre l'image */
+        background-repeat: no-repeat; /* Empêche la répétition de l'image */
+        min-height: 100vh; /* Assure que le background couvre toute la hauteur de la fenêtre */
+        margin: 0;
+        padding: 0;  
+        }
+    .img-container {
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        padding: 5px;
+    }
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    
+</style>

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Succès!</h4>
+        <p>Le diagnostic a été enregistré avec succès pour la patiente {{ patient.user.last_name }}  {{ patient.user.first_name }}</p>
+        <hr>
+        <a href="{% url 'doctor' %}" class="btn btn-primary mt-3">Retour à l'accueil</a>
+    </div>
+</div>
+<style>
+.alert {
+    padding: 40px;
+    font-size: 1.2em;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alert .alert-heading {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+</style>
+{% endblock %}

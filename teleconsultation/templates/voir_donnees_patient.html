@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title"> Vos Données Médicales de |{{ patient.user.last_name }} {{ patient.user.first_name }}</h3>
+
+            {% if donnees_patient.exists %}
+                <ul class="list-group">
+                    {% for donnee in donnees_patient %}
+                        <li class="list-group-item">
+                            <p class="card-text"><strong class="text-succes">Âge:</strong>{{ donnee.age }} ans </p>
+                    <p class="card-text"><strong class="text-succes">Poids:</strong>{{ donnee.poids }} Kg</p>
+                    <p class="card-text"><strong class="text-succes">Taille:</strong>{{ donnee.taille }} Cm </p>
+                    <p class="card-text"><strong class="text-success">Température:</strong>{{ donnee.temperature }} °C</p>
+                    <p class="card-text"><strong class="text-success">Pression artérielle:</strong>{{ donnee.pression_arterielle }} mmHg</p>
+                        </li>
+                        
+                    <li class="list-group-item">
+                        <h4 > Examens Effectuers : </h4>
+                            <p class="card-text">
+                                <strong class="text-success">Paludisme:</strong> 
+                                {% if donnee.paludisme %}
+                                <a style="color: #de2108;">Détecté</a>
+                                {% else %}
+                                <a >NON</a>
+                                {% endif %}
+                            </p>
+                            <p class="card-text">
+                                <strong class="text-success">VIH:</strong> 
+                                {% if donnee.vih %}
+                                <a style="color: #de2108;">Détecté</a>
+                                {% else %}
+                                <a >NON</a>
+                                {% endif %}
+                            </p>
+                            <p class="card-text">
+                                <strong class="text-success">chlamydia:</strong> 
+                                {% if donnee.chlamydia %}
+                                <a style="color: #de2108;">Détecté</a>
+                                {% else %}
+                                <a >NON</a>
+                                {% endif %}
+                            </p>
+                            <p class="card-text">
+                                <strong class="text-success">hepatite:</strong> 
+                                {% if donnee.hepatite %}
+                                <a style="color: #de2108;">Détecté</a>
+                                {% else %}
+                                <a >NON</a>
+                                {% endif %}
+                            </p>
+                
+                    {% endfor %}</li>
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucune donnée médicale disponible.</p>
+            {% endif %}
+            
+            <a href="{% url 'patient' %}" class="btn btn-outline-primary mt-3">Retour</a>
+        </div>
+    </div>
+</div>
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    
+    .card-title {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .list-group-item {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        padding: 15px;
+    }
+    
+    .text-muted {
+        color: #95a5a6;
+    }
+    
+    .btn-outline-primary {
+        border-radius: 30px;
+        color: #3498db;
+        border-color: #3498db;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #3498db;
+        color: #fff;
+    }
+    </style>
+    </style>
+{% endblock %}

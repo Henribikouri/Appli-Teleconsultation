@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teleconsultation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .step-container {
+            display: none;
+        }
+        .step-container.active {
+            display: block;
+        }
+        .btn-group-vertical .btn {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 style="color: rgb(0, 106, 255);"><strong>Bienvenue, Agent Communautaire</strong></h1>
+        <p class="lead" style="color: white;"><mark style="background-color: rgb(26, 255, 0);color: white; border-radius: 10px;">Gérez vos patients efficacement</mark><strong></strong></p>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ajouter une Patiente</h5>
+                    <p class="card-text">Enregistrez un nouveau patient dans le système.</p>
+                    <a href="{% url 'ajouter_patient' %}" class="btn btn-primary">Ajouter une Patiente</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Voir les Patients</h5>
+                    <p class="card-text">Consultez la liste des patients sous votre responsabilité.</p>
+                    <a href="{% url 'voir_patients' %}" class="btn btn-primary">Voir les Patients</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Enregistrement des donnees des Patientes</h5>
+                    <p class="card-text">Enregistrer les donnees/les informations d'une patiente existante.</p>
+                    <a href="#" class="btn btn-primary" id="startFormButton">Faire</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Consulter L'Historique</h5>
+                    <p class="card-text"> Visualisez completement l'historique de activites sur les patientes</p>
+                    <a href="{% url 'consulter_historique' %}" class="btn btn-secondary">Consulter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="patientFormModal" tabindex="-1" role="dialog" aria-labelledby="patientFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="patientFormModalLabel">Enregistrement des données de la Patiente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="patientForm" method="POST" enctype="multipart/form-data" action="{% url 'enregistrer_donnees_patiente' %}">
+                        {% csrf_token %}
+                       
+                        <div class="step-container active" id="step-1">
+                            <h4 style="color: rgba(64, 204, 64, 0.789);">1. Paramètres de base</h4>
+                            <div class="form-group">
+                                <label for="patientSelect"> Veuillez Choisir une patiente </label>
+                                <select class="form-control" id="patientSelect" name="patient">
+                                    {% for patient in patients %}
+                                    <option value="{{ patient.pk}}">{{ patient.user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Âge</label>
+                                <input type="number" class="form-control" id="age" name="age">
+                            </div>
+                            <div class="form-group">
+                                <label for="weight">Poids (kg)</label>
+                                <input type="number" class="form-control" id="weight" name="poids">
+                            </div>
+                            <div class="form-group">
+                                <label for="temperature">Température (°C)</label>
+                                <input type="number" class="form-control" id="temperature" name="temperature">
+                            </div>
+                            <div class="form-group">
+                                <label for="height">Taille (cm)</label>
+                                <input type="number" class="form-control" id="height" name="taille">
+                            </div>
+                            <div class="form-group">
+                                <label for="bloodPressure">Pression artérielle</label>
+                                <input type="text" class="form-control" id="bloodPressure" name="pression_arterielle">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="nextToStep2">Suivant</button>
+                        </div>
+
+                       
+                        <div class="step-container" id="step-2">
+                            <h5 style="color: rgba(22, 231, 22, 0.748);">2. Symptômes</h5>
+                            <div class="form-group">
+                                <label>Paludisme</label>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-outline-success">
+                                        <input type="radio" name="paludisme" value="true" autocomplete="off"> Oui
+                                    </label>
+                                    <label class="btn btn-outline-danger">
+                                        <input type="radio" name="paludisme" value="false" autocomplete="off"> Non
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>VIH</label>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-outline-success">
+                                        <input type="radio" name="vih" value="true" autocomplete="off"> Oui
+                                    </label>
+                                    <label class="btn btn-outline-danger">
+                                        <input type="radio" name="vih" value="false" autocomplete="off"> Non
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Chlamydia</label>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-outline-success">
+                                        <input type="radio" name="chlamydia" value="true" autocomplete="off"> Oui
+                                    </label>
+                                    <label class="btn btn-outline-danger">
+                                        <input type="radio" name="chlamydia" value="false" autocomplete="off"> Non
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Hépatite</label>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-outline-success">
+                                        <input type="radio" name="hepatite" value="true" autocomplete="off"> Oui
+                                    </label>
+                                    <label class="btn btn-outline-danger">
+                                        <input type="radio" name="hepatite" value="false" autocomplete="off"> Non
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="glycemiaRate">Taux de glycémie</label>
+                                <input type="number" class="form-control" id="glycemiaRate" name="taux_glycemie">
+                            </div>
+                            <div class="form-group" id="otherSymptoms">
+                                <label for="additionalSymptom">Autre symptôme</label>
+                                <input type="text" class="form-control" name="symptomes">
+                            </div>
+                            <button type="button" class="btn btn-secondary" id="backToStep1">Précédent</button>
+                            <button type="button" class="btn btn-primary" id="nextToStep3">Suivant</button>
+                        </div>
+
+                       
+                        <div class="step-container" id="step-3">
+                            <h5 style="color: rgba(64, 204, 64, 0.767);">3. Informations supplémentaires</h5>
+                            <div class="form-group">
+                                <label for="bloodGroup">Groupe sanguin</label>
+                                <input type="text" class="form-control" id="bloodGroup" name="groupe_sanguin">
+                            </div>
+                            <div class="form-group">
+                                <label for="fetusMovement">Mouvement du fœtus</label>
+                                <input type="text" class="form-control" id="fetusMovement" name="mouvement_foetus">
+                            </div>
+                            <div class="form-group">
+                                <label for="heartBeat">Battement du cœur</label>
+                                <input type="text" class="form-control" id="heartBeat" name="battement_coeur">
+                            </div>
+                            <div class="form-group">
+                                <label for="urineHeight">Hauteur uterine</label>
+                                <input type="text" class="form-control" id="urineHeight" name="hauteur_uterine">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastPeriod">Date des dernières règle</label>
+                                <input type="date" class="form-control" id="lastPeriod" name="date_derniere_regle">
+                            </div>
+                            <div class="form-group">
+                                <label for="ultrasound">Ajouter une image d'écographie</label>
+                                <input type="file" class="form-control-file" id="ultrasound" name="image_ecographie">
+                            </div>
+                            <button type="button" class="btn btn-secondary" id="backToStep2">Précédent</button>
+                            <button type="submit" class="btn btn-success">Verification</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#startFormButton').on('click', function() {
+            $('#patientFormModal').modal('show');
+        });
+
+        $('#nextToStep2').on('click', function() {
+            $('#step-1').removeClass('active');
+            $('#step-2').addClass('active');
+        });
+
+        $('#backToStep1').on('click', function() {
+            $('#step-2').removeClass('active');
+            $('#step-1').addClass('active');
+        });
+
+        $('#nextToStep3').on('click', function() {
+            $('#step-2').removeClass('active');
+            $('#step-3').addClass('active');
+        });
+
+        $('#backToStep2').on('click', function() {
+            $('#step-3').removeClass('active');
+            $('#step-2').addClass('active');
+        });
+
+        $('#addSymptom').on('click', function() {
+            var symptomInput = $('<input type="text" class="form-control mt-2" name="additionalSymptom" placeholder="Autre symptôme">');
+            $('#otherSymptoms').after(symptomInput);
+        });
+    });
+</script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,300 @@
+<!-- {% extends 'base.html' %} -->
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de la Patiente</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .btn-lift {
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+        .btn-lift:hover {
+            transform: translateY(-5px);
+            background-color: #218838; /* Changement de couleur au survol */
+        }
+        .img-container {
+            border: 4px solid #d4edda;
+            border-radius: 50%;
+            padding: 5px;
+            background-color: #fff; /* Fond blanc pour la photo */
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .img-zoom {
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        .img-container:hover .img-zoom {
+            transform: scale(1.1);
+        }
+        .card {
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 700px; /* Largeur maximale ajustée */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+        .card:hover {
+            transform: scale(1.02);
+        }
+        .card-body {
+            flex: 1;
+        }
+        .btn-outline-success {
+            border-color: #28a745;
+            color: #28a745;
+            background-color: transparent;
+            border-radius: 1px; /* Bordure arrondie */
+            padding: 10px 20px; /* Taille du bouton */
+        }
+        .btn-outline-success:hover {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .text-success {
+            color: #28a745 !important;
+        }
+        .text-muted {
+            color: #6c757d !important;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        .fade-in-delay {
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.5s;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        .card-content {
+            margin-left: 20px; /* Espacement entre la photo et les infos */
+        }
+        .btn-outline-success {
+    border: 2px solid #28a745; /* Bordure plus épaisse */
+    color: #28a745; /* Couleur du texte */
+    background-color: #fff; /* Couleur de fond du bouton */
+    border-radius: 10px; /* Bordures arrondies */
+    padding: 10px 20px; /* Espacement intérieur */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Transitions pour l'effet de survol */
+    display: inline-block;
+    text-decoration: none; /* Supprimer la décoration du lien */
+    text-align: center; /* Aligner le texte au centre */
+}
+.btn-outline-success:hover {
+    background-color: #28a745; /* Couleur de fond au survol */
+    color: #fff; /* Couleur du texte au survol */
+    transform: translateY(-5px); /* Légère élévation du bouton */
+}
+.btn1:hover {
+    background-color: #d64220; /* Couleur de fond au survol */
+    color: #fff; /* Couleur du texte au survol */
+    transform: translateY(-5px); /* Légère élévation du bouton */
+}
+.btn1 {
+    border: 2px solid #b34926; /* Bordure plus épaisse */
+    color: #cf2e19; /* Couleur du texte */
+    background-color: #fff; /* Couleur de fond du bouton */
+    border-radius: 10px; /* Bordures arrondies */
+    padding: 10px 20px; /* Espacement intérieur */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Transitions pour l'effet de survol */
+    display: inline-block;
+    text-decoration: none; /* Supprimer la décoration du lien */
+    text-align: center; /* Aligner le texte au centre */
+}
+.btn2{
+    border: 2px solid #2642b3; /* Bordure plus épaisse */
+    color: #191fcf; /* Couleur du texte */
+    background-color: #fff; /* Couleur de fond du bouton */
+    border-radius: 10px; /* Bordures arrondies */
+    padding: 10px 20px; /* Espacement intérieur */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Transitions pour l'effet de survol */
+    display: inline-block;
+    text-decoration: none; /* Supprimer la décoration du lien */
+    text-align: center; /* Aligner le texte au centre */
+
+}
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="position-relative">
+            <a href="{% url 'voir_patients' %}" class="btn btn-outline-success position-absolute top-0 end-0 mt-3 me-3 btn-lift" >Retour</a>
+            <div class="text-center mb-4">
+                <center>
+                <h1 class="display-4 text-success fade-in">Informations de la Patiente</h1>
+                <p class="lead text-muted fade-in-delay">{{ patient.user.last_name }} {{ patient.user.first_name }}</p>
+                {% if user.is_agent %}
+                <p class="lead text-muted fade-in-delay"><b><i><strong>Identifiant Unique:</strong></i></b> {{ patient.user.username }}</p>
+                {% endif %}
+            </center>
+            </div>
+
+            <div class="card shadow-lg border-success mx-auto">
+                <div class="img-container mb-4">
+                    {% if patient.photo_profil %}
+                    <img src="{{ patient.photo_profil.url }}" class="img-zoom" alt="Photo de {{ patient.user.username }}" style="width: 180px; height: 180px; object-fit: cover;">
+                    {% else %}
+                    <img src="{% static 'images/aucunepp.png' %}" class="img-zoom" alt="Photo de {{ patient.user.username }}" style="width: 180px; height: 180px; object-fit: cover;">
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <p class="card-text"><strong class="text-success">Nom de famille:</strong> {{ patient.user.last_name }}</p>
+                    <p class="card-text"><strong class="text-success">Prénom:</strong> {{ patient.user.first_name }}</p>
+                    <p class="card-text"><strong class="text-success">Email:</strong> {{ patient.user.email }}</p>
+                    <p class="card-text"><strong class="text-success">Centre de Santé:</strong> {{ patient.centre_de_sante.nom }}</p>
+                    <p class="card-text"><strong class="text-success">Numéro de Téléphone:</strong> {{ patient.numero_telephone }}</p>
+                    <p class="card-text"><strong class="text-success">Adresse:</strong> {{ patient.adresse }}</p>
+                    {% if user.is_agent %}
+                    <p><strong class="text-success">Dernière connexion :</strong> <span class="datetime">{{ patient.user.last_login|date:"d M Y H:i:s" }} UTC</span></p>
+                    <p><strong class="text-success">Date de création du Compte :</strong> <span class="datetime">{{ patient.user.date_joined|date:"d M Y H:i:s" }} UTC</span></p>
+                    <a href="{% url 'modifier_patient' patient.pk %}" class="btn1" style="border: 2px solid #d44141;">Modifier</a>
+                    {% endif %}
+
+                </div>
+                {% if user.is_doctor %}
+                {% if diagnostic_existe %}
+                <div class="alert alert-warning" role="alert">
+                    <strong style="color: red;">Diagnostic déjà soumis pour cette patiente</strong>.
+                </div>
+                <a href="{% url 'modifier_diagnostic' diagnostic.pk %}" class="btn1">Modifier le Diagnostic</a>
+            {% else %}
+            {% if donnees_patiente %}
+                <a href="{% url 'soumettre_diagnostic' patient.pk %}" class="btn2">Soumettre un Diagnostic</a>
+            {% else %}
+            <p><strong><i>En Attente des Donnees</i></strong></p>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            </div>
+        </div>
+        
+    </div>
+    <div class="container mt-5">
+        <div class="position-relative" >
+                <!-- <center>
+                <h1 class="" style="color: #e76824;" style="padding: 50px;">Donnees de Consultation de la Patiente</h1>
+            </center> -->
+            </div>
+
+            <!-- <div class="card shadow-lg border-success mx-auto"> -->
+                {% if donnees_patiente %}
+                <div class="card-content" style="padding: 50px;">
+                   <br><br><br><br> <h1 class="" style="color: #e76824;" style="padding: 50px;">Donnees de Consultation de la Patiente</h1>
+                    <center><h4 ><u>1. Paramètres de base</u></h4>
+                    <p class="card-text"><strong class="text-success">Âge:</strong>{{ donnees_patiente.age }} ans </p>
+                    <p class="card-text"><strong class="text-success">Poids:</strong>{{ donnees_patiente.poids }} Kg</p>
+                    <p class="card-text"><strong class="text-success">Taille:</strong>{{ donnees_patiente.taille }} Cm </p>
+                    <p class="card-text"><strong class="text-success">Température:</strong>{{ donnees_patiente.temperature }} °C</p>
+                    <p class="card-text"><strong class="text-success">Pression artérielle:</strong>{{ donnees_patiente.pression_arterielle }} mmHg</p>
+                </center>
+                    <center><h4 ><u>2. Symptômes</u></h4>
+                        <p class="card-text">
+                            <strong class="text-success">Paludisme:</strong> 
+                            {% if donnees_patiente.paludisme %}
+                            <a style="color: #de2108;">Détecté</a>
+                            {% else %}
+                            <a >NON</a>
+                            {% endif %}
+                        </p>
+                        <p class="card-text">
+                            <strong class="text-success">VIH:</strong> 
+                            {% if donnees_patiente.vih %}
+                            <a style="color: #de2108;">Détecté</a>
+                            {% else %}
+                            <a >NON</a>
+                            {% endif %}
+                        </p>
+                        <p class="card-text">
+                            <strong class="text-success">chlamydia:</strong> 
+                            {% if donnees_patiente.chlamydia %}
+                            <a style="color: #de2108;">Détecté</a>
+                            {% else %}
+                            <a >NON</a>
+                            {% endif %}
+                        </p>
+                        <p class="card-text">
+                            <strong class="text-success">hepatite:</strong> 
+                            {% if donnees_patiente.hepatite %}
+                            <a style="color: #de2108;">Détecté</a>
+                            {% else %}
+                            <a >NON</a>
+                            {% endif %}
+                        </p>
+                </center>
+                    <center><strong><h5 ><u>3. Informations supplémentaires</u></h5></strong>
+                        <p class="card-text"><strong class="text-success">Groupe Sanguin:</strong><strong>{{ donnees_patiente.groupe_sanguin }}</strong> </p>
+                        <p class="card-text"><strong class="text-success">Taux de Glycemie:</strong>{{ donnees_patiente.taux_glycemie }} mg/dL </p>
+                        <p class="card-text"><strong class="text-success">Autres symptomes Détectés :</strong>{{ donnees_patiente.symptomes }} </p>
+                        <p class="card-text"><strong class="text-success">Mouvements du fœtus :</strong>{{ donnees_patiente.mouvement_foetus }} mvts/h </p>
+                        <p class="card-text"><strong class="text-success">Battements de cœur ( Freq.card):</strong>{{ donnees_patiente.battement_coeur }} bpm </p>
+                        <p class="card-text"><strong class="text-success">Hauteur de l'Uterine:</strong>{{ donnees_patiente.hauteur_uterine }} cm </p>
+                        <p class="card-text"><strong class="text-success">Date des dernières règle:</strong>{{ donnees_patiente.date_derniere_regle}}</p>
+                        <p class="card-text">
+                        <strong class="text-success">Images Echographique :</strong> 
+                        {% if donnees_patiente.image_ecographie %}
+                        <a href="{{ donnees_patiente.image_ecographie.url }}" class="btn1" target="_blank">Voir l'image</a>
+                        {% else %}
+                       Aucune image Ecographique enregistrer 
+                        {% endif %}
+                        </p>
+                    </center>
+                    
+                </div>
+                {% else %}
+                <div class="alert alert-warning text-center" role="alert">
+                    <h1 class="" style="color: #e76824;" style="padding: 50px;">Donnees de Consultation de la Patiente</h1>
+                    Aucune donnée de consultation enregistrée pour cette patiente.
+                </div>
+                {% if user.is_agent %}
+                <div class="text-center mt-4">
+                    <a href="{% url 'enregistrer_donnees_patiente' %}" class="btn1">Enregistrer les données</a>
+                </div>
+                {% endif %}
+            {% endif %}
+            <!-- </div> -->
+            
+        </div>
+        
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        function convertUTCToLocal() {
+            const elements = document.querySelectorAll('.datetime');
+            elements.forEach(element => {
+                const utcDateStr = element.innerText.replace(' UTC', '');
+                const utcDate = new Date(utcDateStr + 'Z');
+                const localDateStr = utcDate.toLocaleString('en-GB', { timeZoneName: 'short' });
+                element.innerText = localDateStr;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', convertUTCToLocal);
+    </script>
+</body>
+</html>
+{% endblock %}

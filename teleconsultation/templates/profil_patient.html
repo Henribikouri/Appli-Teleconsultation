@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header text-white bg-primary">
+            <h2><CEnter>BIENVENUE SUR VOTRE PROFIL</CEnter> </h2>
+            <h2><CEnter style="color: black;">{{ patient.user.last_name }} {{ patient.user.first_name }} </CEnter> </h2>
+        </div>
+        <div class="card-body">
+            <div class="img-container mb-3">
+                {% if patient.photo_profil %}
+                <img src="{{ patient.photo_profil.url }}" class="rounded-circle" alt="Photo de {{ patient.user.username }}" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                <img src="{% static 'images/aucunepp.png' %}" class="rounded-circle" alt="Photo de {{ patient.user.username }}" style="width: 150px; height: 150px; object-fit: cover;">
+                {% endif %}
+            </div>
+            <p><strong>Nom de Famille :</strong> {{ patient.user.last_name }}</p>
+            <p><strong>Prénom :</strong> {{ patient.user.first_name }}</p>
+            <p><strong>E-mail :</strong> {{ patient.user.email }}</p>
+            <p><strong>Centre de Santé :</strong> {{ patient.centre_de_sante.nom }}</p>
+            <p><strong>Numéro de Téléphone :</strong> {{ patient.numero_telephone }}</p>
+            <p><strong>Adresse :</strong> {{ patient.adresse }}</p>
+            <p><strong class="text-success">Date d'Adhesion :</strong> <span class="datetime">{{ patient.user.date_joined|date:"d M Y H:i:s" }} UTC</span></p>
+            <a href="{% url 'patient' %}" class="btn btn-outline-secondary mt-3">Retour</a>
+            <a href="{% url 'voir_donnees_patient' %}" class="btn1" style="margin-left: 200px;">Aller aux consultations</a>
+        </div>
+    </div>
+</div>
+<script>
+    function convertUTCToLocal() {
+        const elements = document.querySelectorAll('.datetime');
+        elements.forEach(element => {
+            const utcDateStr = element.innerText.replace(' UTC', '');
+            const utcDate = new Date(utcDateStr + 'Z');
+            const localDateStr = utcDate.toLocaleString('en-GB', { timeZoneName: 'short' });
+            element.innerText = localDateStr;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', convertUTCToLocal);
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const btns = document.querySelectorAll(".btn");
+        btns.forEach(btn => {
+            btn.addEventListener("mouseover", function() {
+                this.style.transform = "scale(1.1)";
+            });
+            btn.addEventListener("mouseout", function() {
+                this.style.transform = "scale(1)";
+            });
+        });
+    });
+</script>
+
+<style>
+    .btn1:hover {
+    background-color: #d64220; /* Couleur de fond au survol */
+    color: #fff; /* Couleur du texte au survol */
+    transform: translateY(-5px); /* Légère élévation du bouton */
+}
+.btn1 {
+    border: 2px solid #b34926; /* Bordure plus épaisse */
+    color: #cf2e19; /* Couleur du texte */
+    background-color: #fff; /* Couleur de fond du bouton */
+    border-radius: 25px; /* Bordures arrondies */
+    padding: 10px 20px; /* Espacement intérieur */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Transitions pour l'effet de survol */
+    display: inline-block;
+    text-decoration: none; /* Supprimer la décoration du lien */
+    text-align: center; /* Aligner le texte au centre */
+}
+    .container {
+        max-width: 800px;
+    }
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .card-header {
+        border-bottom: 5px solid #0056b3;
+    }
+    .card-body p {
+        font-size: 1.2rem;
+        color: #333;
+    }
+    .btn-outline-secondary {
+        border: 2px solid #0056b3;
+        color: #0056b3;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+</style>
+{% endblock %}
